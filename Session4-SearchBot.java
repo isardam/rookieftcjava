@@ -23,13 +23,21 @@
  * console output. It is NOT yet an FTC OpMode.
  */
 
+/*
+ * SearchBot.java
+ *
+ * Session 4 Final Project
+ *
+ * The robot searches a 4 x 4 field
+ * for a target.
+ */
 public class SearchBot {
 
     public static void main(String[] args) {
 
-        // ==========================================
-        // ROBOT INFORMATION
-        // ==========================================
+        // =====================================================
+        // 1. VARIABLES
+        // =====================================================
 
         String robotName = "Iron Angel";
 
@@ -37,109 +45,106 @@ public class SearchBot {
 
         int batteryPercent = 100;
 
-        boolean robotRunning = true;
-
-        boolean targetFound = false;
-
-
-        // ==========================================
-        // TARGET LOCATION
-        // ==========================================
-
         int targetRow = 3;
         int targetColumn = 2;
 
+        int locationsSearched = 0;
 
-        // ==========================================
-        // START MISSION
-        // ==========================================
+        boolean targetFound = false;
+        boolean robotRunning = true;
+
+
+        // =====================================================
+        // 2. ROBOT STARTUP
+        // =====================================================
 
         System.out.println("=================================");
-        System.out.println("           SEARCH BOT");
+        System.out.println("          SEARCH BOT");
         System.out.println("=================================");
 
         System.out.println("Robot: " + robotName);
-        System.out.println("Grid Size: "
+        System.out.println("Field: "
                 + gridSize + " x " + gridSize);
 
-        System.out.println("Battery: "
-                + batteryPercent + "%");
+        System.out.println("Target Location: SECRET");
 
         System.out.println("---------------------------------");
         System.out.println("MISSION START");
         System.out.println("---------------------------------");
 
 
-        // ==========================================
-        // SEARCH THE GRID
-        // ==========================================
-
-        /*
-         * The outer loop moves through each row.
-         */
+        // =====================================================
+        // 3. FOR LOOP
+        //
+        // The robot searches each row.
+        // =====================================================
 
         for (int row = 1; row <= gridSize; row++) {
 
-            /*
-             * The inner loop moves through
-             * each column in the current row.
-             */
+
+            // =================================================
+            // 4. NESTED FOR LOOP
+            //
+            // The robot searches each column
+            // inside the current row.
+            // =================================================
 
             for (int column = 1;
                  column <= gridSize;
                  column++) {
 
 
-                // ==================================
-                // CHECK ROBOT STATUS
-                // ==================================
+                // =============================================
+                // 5. BOOLEAN LOGIC
+                //
+                // The robot should only search when:
+                //
+                // robotRunning = true
+                // AND
+                // targetFound = false
+                // =============================================
 
                 if (robotRunning && !targetFound) {
 
+
+                    // =========================================
+                    // 6. REPEATED ACTION
+                    // =========================================
+
                     System.out.println(
-                        "Searching Row " + row
-                        + ", Column " + column
+                        "Robot moves to Row "
+                        + row
+                        + ", Column "
+                        + column
+                    );
+
+                    System.out.println(
+                        "Scanning location..."
                     );
 
 
-                    // ==============================
-                    // CHECK FOR TARGET
-                    // ==============================
+                    // =========================================
+                    // 7. COUNTER
+                    //
+                    // Keep track of how many locations
+                    // the robot has searched.
+                    // =========================================
 
-                    if (row == targetRow
-                            && column == targetColumn) {
-
-                        targetFound = true;
-
-                        System.out.println();
-                        System.out.println(
-                            ">>> TARGET FOUND! <<<"
-                        );
-
-                        System.out.println(
-                            "Target Location: Row "
-                            + row
-                            + ", Column "
-                            + column
-                        );
-
-                        System.out.println();
+                    locationsSearched++;
 
 
-                    } else {
-
-                        System.out.println(
-                            "No target here."
-                        );
-                    }
+                    System.out.println(
+                        "Locations searched: "
+                        + locationsSearched
+                    );
 
 
-                    // ==============================
-                    // SIMULATE BATTERY USE
-                    // ==============================
+                    // =========================================
+                    // 8. SIMULATE BATTERY USAGE
+                    // =========================================
 
                     batteryPercent =
-                            batteryPercent - 2;
+                        batteryPercent - 5;
 
                     System.out.println(
                         "Battery: "
@@ -147,76 +152,134 @@ public class SearchBot {
                         + "%"
                     );
 
+
+                    // =========================================
+                    // 9. COMPARISONS
+                    //
+                    // Is the robot at the target?
+                    // =========================================
+
+                    if (row == targetRow &&
+                        column == targetColumn) {
+
+                        targetFound = true;
+
+                        System.out.println();
+                        System.out.println(
+                            "************************"
+                        );
+
+                        System.out.println(
+                            "     TARGET FOUND!"
+                        );
+
+                        System.out.println(
+                            "************************"
+                        );
+
+                        System.out.println(
+                            "Target Row: "
+                            + row
+                        );
+
+                        System.out.println(
+                            "Target Column: "
+                            + column
+                        );
+                    }
+
+
+                    // =========================================
+                    // 10. BATTERY CHECK
+                    //
+                    // Another comparison.
+                    // =========================================
+
+                    if (batteryPercent <= 20 &&
+                        !targetFound) {
+
+                        robotRunning = false;
+
+                        System.out.println();
+                        System.out.println(
+                            "WARNING: LOW BATTERY!"
+                        );
+
+                        System.out.println(
+                            "Robot must return home."
+                        );
+                    }
+
+
                     System.out.println();
-                }
-
-
-                // ==================================
-                // LOW BATTERY CHECK
-                // ==================================
-
-                if (batteryPercent <= 20
-                        && !targetFound) {
-
-                    System.out.println(
-                        "WARNING: LOW BATTERY!"
-                    );
-
-                    System.out.println(
-                        "Robot must return home."
-                    );
-
-                    robotRunning = false;
                 }
             }
         }
 
 
-        // ==========================================
-        // MISSION RESULTS
-        // ==========================================
+        // =====================================================
+        // 11. IF / ELSE
+        //
+        // Decide what happened during the mission.
+        // =====================================================
 
         System.out.println("---------------------------------");
-        System.out.println("MISSION COMPLETE");
+        System.out.println("SEARCH COMPLETE");
         System.out.println("---------------------------------");
 
 
         if (targetFound) {
 
             System.out.println(
-                "STATUS: SUCCESS"
+                "MISSION STATUS: SUCCESS"
             );
 
             System.out.println(
-                "Target successfully located."
+                "The robot found the target!"
             );
 
         } else if (!robotRunning) {
 
             System.out.println(
-                "STATUS: ABORTED"
+                "MISSION STATUS: ABORTED"
             );
 
             System.out.println(
-                "Robot stopped before finding target."
+                "The robot ran out of battery."
             );
 
         } else {
 
             System.out.println(
-                "STATUS: TARGET NOT FOUND"
+                "MISSION STATUS: TARGET NOT FOUND"
             );
         }
 
 
+        // =====================================================
+        // 12. FINAL REPORT
+        // =====================================================
+
+        System.out.println("---------------------------------");
+
         System.out.println(
-            "Final Battery: "
+            "Locations searched: "
+            + locationsSearched
+        );
+
+        System.out.println(
+            "Final battery: "
             + batteryPercent
             + "%"
         );
 
-        System.out.println("=================================");
-        System.out.println("SEARCH BOT SHUTDOWN");
+        System.out.println(
+            "Target found: "
+            + targetFound
+        );
+
+        System.out.println("---------------------------------");
+        System.out.println("MISSION ENDED");
         System.out.println("=================================");
     }
 }
