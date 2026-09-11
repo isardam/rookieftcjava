@@ -1,4 +1,9 @@
-/* "Your robot refuses to start. Find the problems and get Mission Control running." */
+/*
+Challenges
+1. Your robot refuses to start. Find the problems and get Mission Control running.
+2. Your robot has been given a new mission. Modify MissionControl so that it performs a different sequence.
+3. Can you now think how to create a method startMission() and call it from main()
+*/
 
 public class MissionControl {
 
