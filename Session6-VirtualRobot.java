@@ -1,4 +1,4 @@
-
+ 
 /*
  * ============================================================
  * SESSION 6 — OBJECT-ORIENTED ROBOT
@@ -6,63 +6,39 @@
  *
  * FTC JAVA — ROOKIE TEAM
  *
- * PROJECT:
- *     Virtual Robot
+ * DELIVERABLE:
+ *     VirtualRobot.java
  *
  * BIG IDEA:
  *
- *     A ROBOT OBJECT has:
+ *     OBJECT = STATE + BEHAVIOR
  *
- *         STATE + BEHAVIOR
+ * STATE:
+ *     position
+ *     heading
+ *     battery
+ *     target state
  *
- *     STATE:
- *         position
- *         heading
- *         battery
- *         target status
+ * BEHAVIOR:
+ *     move()
+ *     turnLeft()
+ *     turnRight()
+ *     scan()
+ *     recharge()
+ *     reportStatus()
  *
- *     BEHAVIOR:
- *         move()
- *         turnLeft()
- *         turnRight()
- *         scan()
- *         recharge()
- *         reportStatus()
- *
- *
- * JAVA CONCEPTS:
- *
- *     Classes
- *     Objects
- *     Constructors
- *     this
- *     Encapsulation
- *
- *
- * CHALLENGE SEQUENCE
- * ============================================================
- *
- * Challenge 1  - Understand a Class
- * Challenge 2  - Create a Robot Object
- * Challenge 3  - Give the Robot State
- * Challenge 4  - Build a Constructor
- * Challenge 5  - Use "this"
- * Challenge 6  - Give the Robot Behavior
- * Challenge 7  - Change Robot State
- * Challenge 8  - Add a Sensor / Scan
- * Challenge 9  - Create Two Robots
- * Challenge 10 - Encapsulation
- * Challenge 11 - Build a Robot Mission
- * Challenge 12 - Team Challenge
- * Challenge 13 - Final Robot Mission
- *
- * ============================================================
  *
  * IMPORTANT:
+ * ============================================================
  *
- * Complete the challenges in order.
+ * EVERY CHALLENGE IS INDEPENDENT.
  *
- * Only run ONE challenge at a time.
+ * You can run Challenge 1 by itself.
+ * You can run Challenge 8 by itself.
+ * You can run Challenge 13 by itself.
+ *
+ * A challenge NEVER depends on another challenge having
+ * been run first.
  *
  * ============================================================
  */
@@ -70,18 +46,18 @@
 
 /*
  * ============================================================
- * CLASS: Robot
+ * ROBOT CLASS
  * ============================================================
  *
- * This is the BLUEPRINT for a robot.
+ * This is our robot BLUEPRINT.
  *
- * It describes:
+ * Every Robot object gets its own:
  *
- *     What a robot KNOWS
- *
- * and
- *
- *     What a robot CAN DO
+ *     x
+ *     y
+ *     heading
+ *     battery
+ *     targetFound
  *
  * ============================================================
  */
@@ -90,15 +66,7 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 3
     // ROBOT STATE
-    // ========================================================
-    //
-    // These variables describe the robot.
-    //
-    // They are INSTANCE VARIABLES because every Robot object
-    // gets its OWN copy.
-    //
     // ========================================================
 
     private int x;
@@ -113,49 +81,38 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 4
     // DEFAULT CONSTRUCTOR
     // ========================================================
     //
-    // A constructor prepares a new object.
+    // Creates a robot at:
     //
-    // When we write:
+    //     (0, 0)
     //
-    //     Robot robot = new Robot();
+    // facing:
     //
-    // this constructor runs.
+    //     NORTH
+    //
+    // with:
+    //
+    //     100% battery
     //
     // ========================================================
 
     public Robot() {
 
         x = 0;
-
         y = 0;
-
         heading = "NORTH";
-
         battery = 100;
-
         targetFound = false;
     }
 
 
     // ========================================================
-    // CHALLENGE 5
-    // CONSTRUCTOR WITH PARAMETERS
+    // PARAMETERIZED CONSTRUCTOR
     // ========================================================
     //
-    // We can create a robot with a custom starting state.
-    //
-    // Example:
-    //
-    //     Robot robot = new Robot(
-    //         5,
-    //         3,
-    //         "EAST",
-    //         80
-    //     );
+    // Allows us to create a custom robot.
     //
     // ========================================================
 
@@ -165,20 +122,8 @@ class Robot {
             String heading,
             int battery) {
 
-
         /*
-         * "this" means:
-         *
-         *     THIS robot object
-         *
-         * this.x means:
-         *
-         *     the x belonging to THIS robot
-         *
-         * x means:
-         *
-         *     the parameter sent into the constructor
-         *
+         * "this" means THIS robot object.
          */
 
         this.x = x;
@@ -194,20 +139,15 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 6
     // MOVE
-    // ========================================================
-    //
-    // A method gives an object BEHAVIOR.
-    //
     // ========================================================
 
     public void move() {
 
-        if (battery <= 0) {
+        if (battery < 5) {
 
             System.out.println(
-                    "ROBOT: Cannot move. Battery empty!"
+                    "ROBOT: Not enough battery to move!"
             );
 
             return;
@@ -246,7 +186,19 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 6B
+    // MOVE MULTIPLE SPACES
+    // ========================================================
+
+    public void move(int spaces) {
+
+        for (int i = 0; i < spaces; i++) {
+
+            move();
+        }
+    }
+
+
+    // ========================================================
     // TURN RIGHT
     // ========================================================
 
@@ -290,7 +242,6 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 6C
     // TURN LEFT
     // ========================================================
 
@@ -334,37 +285,12 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 7
-    // MOVE MULTIPLE SPACES
-    // ========================================================
-    //
-    // This connects Session 5 methods/parameters with
-    // today's object-oriented programming.
-    //
-    // ========================================================
-
-    public void move(int spaces) {
-
-        for (int i = 0; i < spaces; i++) {
-
-            move();
-        }
-    }
-
-
-    // ========================================================
-    // CHALLENGE 8
     // SCAN
     // ========================================================
     //
-    // In a real FTC robot this could eventually use:
+    // Demo target:
     //
-    //     color sensor
-    //     distance sensor
-    //     camera
-    //     AprilTag detection
-    //
-    // For now, we simulate a sensor.
+    //     (3, 2)
     //
     // ========================================================
 
@@ -387,15 +313,6 @@ class Robot {
                 "ROBOT: Scanning..."
         );
 
-
-        /*
-         * Demo target:
-         *
-         * The target exists at:
-         *
-         *     x = 3
-         *     y = 2
-         */
 
         if (x == 3 && y == 2) {
 
@@ -420,7 +337,6 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 9
     // RECHARGE
     // ========================================================
 
@@ -435,18 +351,16 @@ class Robot {
 
 
     // ========================================================
-    // CHALLENGE 10
-    // ENCAPSULATION
+    // GETTERS
     // ========================================================
     //
-    // The variables are PRIVATE.
+    // These demonstrate BASIC ENCAPSULATION.
     //
-    // Other classes cannot directly change them.
+    // The variables are private.
     //
-    // Instead, we provide GETTER methods.
+    // Other code cannot directly change them.
     //
     // ========================================================
-
 
     public int getX() {
 
@@ -479,7 +393,7 @@ class Robot {
 
 
     // ========================================================
-    // ROBOT STATUS
+    // STATUS
     // ========================================================
 
     public void reportStatus() {
@@ -487,7 +401,15 @@ class Robot {
         System.out.println();
 
         System.out.println(
-                "========== ROBOT STATUS =========="
+                "--------------------------------"
+        );
+
+        System.out.println(
+                "ROBOT STATUS"
+        );
+
+        System.out.println(
+                "--------------------------------"
         );
 
         System.out.println(
@@ -515,7 +437,7 @@ class Robot {
         );
 
         System.out.println(
-                "=================================="
+                "--------------------------------"
         );
     }
 }
@@ -523,15 +445,7 @@ class Robot {
 
 /*
  * ============================================================
- * CLASS: VirtualRobot
- * ============================================================
- *
- * This class runs our challenges.
- *
- * Robot is the blueprint.
- *
- * VirtualRobot is the program controlling the robots.
- *
+ * MAIN CLASS
  * ============================================================
  */
 
@@ -539,85 +453,118 @@ public class VirtualRobot {
 
 
     // ========================================================
+    // HELPER
+    // ========================================================
+
+    static void title(
+            int number,
+            String name) {
+
+        System.out.println();
+
+        System.out.println(
+                "=========================================="
+        );
+
+        System.out.println(
+                "CHALLENGE " +
+                number +
+                " - " +
+                name
+        );
+
+        System.out.println(
+                "=========================================="
+        );
+    }
+
+
+    // ========================================================
     // CHALLENGE 1
-    // UNDERSTAND THE BLUEPRINT
+    // UNDERSTAND THE CLASS
     // ========================================================
     //
-    // No coding yet.
+    // OBJECTIVE:
     //
-    // Discuss:
-    //
-    //     What does the Robot class describe?
-    //
-    //     What information does a robot have?
-    //
-    //     What actions can a robot perform?
+    // Understand that Robot is a CLASS / BLUEPRINT.
     //
     // ========================================================
 
     static void challenge1() {
 
+        title(1, "UNDERSTAND THE CLASS");
+
+
+        System.out.println(
+                "A class is a blueprint."
+        );
+
+        System.out.println(
+                "Robot describes what a robot HAS"
+        );
+
+        System.out.println(
+                "and what a robot CAN DO."
+        );
+
+
         System.out.println();
+
         System.out.println(
-                "================================"
+                "Robot has:"
         );
 
         System.out.println(
-                "CHALLENGE 1"
+                "  position"
         );
 
         System.out.println(
-                "UNDERSTAND THE ROBOT CLASS"
+                "  heading"
         );
 
         System.out.println(
-                "================================"
-        );
-
-
-        System.out.println(
-                "A class is a blueprint for objects."
+                "  battery"
         );
 
         System.out.println(
-                "A Robot object has state and behavior."
+                "  target state"
+        );
+
+
+        System.out.println();
+
+        System.out.println(
+                "Robot can:"
+        );
+
+        System.out.println(
+                "  move"
+        );
+
+        System.out.println(
+                "  turn"
+        );
+
+        System.out.println(
+                "  scan"
         );
     }
 
 
     // ========================================================
     // CHALLENGE 2
-    // CREATE A ROBOT OBJECT
+    // CREATE AN OBJECT
     // ========================================================
     //
-    // Class:
+    // OBJECTIVE:
     //
-    //     Robot
-    //
-    // Object:
-    //
-    //     robot
+    // Create an actual Robot object from the class.
     //
     // ========================================================
 
     static void challenge2() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 2"
-        );
-
-        System.out.println(
-                "CREATE A ROBOT OBJECT"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(2, "CREATE A ROBOT OBJECT");
 
 
         // TODO:
@@ -631,7 +578,7 @@ public class VirtualRobot {
 
         // TODO:
         //
-        // Call reportStatus().
+        // Display the robot's status.
 
 
     }
@@ -639,58 +586,52 @@ public class VirtualRobot {
 
     // ========================================================
     // CHALLENGE 3
-    // CHANGE ROBOT STATE
+    // WATCH STATE CHANGE
     // ========================================================
     //
-    // Create a robot.
+    // OBJECTIVE:
     //
-    // Move it.
-    //
-    // Turn it.
-    //
-    // Move it again.
-    //
-    // Display its state before and after.
+    // Observe how an object's state changes.
     //
     // ========================================================
 
     static void challenge3() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
+        title(3, "WATCH STATE CHANGE");
 
-        System.out.println(
-                "CHALLENGE 3"
-        );
 
-        System.out.println(
-                "CHANGE ROBOT STATE"
-        );
-
-        System.out.println(
-                "================================"
-        );
-
+        // Every challenge creates its OWN robot.
+        //
+        // This makes the challenge independent.
 
         Robot robot = new Robot();
 
+
+        System.out.println(
+                "BEFORE:"
+        );
 
         robot.reportStatus();
 
 
         // TODO:
+        //
         // Move the robot twice.
 
 
         // TODO:
+        //
         // Turn right.
 
 
         // TODO:
-        // Move the robot again.
+        //
+        // Move again.
 
+
+        System.out.println(
+                "AFTER:"
+        );
 
         robot.reportStatus();
     }
@@ -698,56 +639,38 @@ public class VirtualRobot {
 
     // ========================================================
     // CHALLENGE 4
-    // USE A CONSTRUCTOR
+    // CONSTRUCTOR
     // ========================================================
     //
-    // Create a robot starting at:
+    // OBJECTIVE:
     //
-    //     x = 5
-    //     y = 3
-    //     heading = EAST
-    //     battery = 75
+    // Create a robot with a custom starting state.
     //
     // ========================================================
 
     static void challenge4() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 4"
-        );
-
-        System.out.println(
-                "CUSTOM ROBOT CONSTRUCTOR"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(4, "USE A CONSTRUCTOR");
 
 
         // TODO:
         //
-        // Create a Robot using the constructor
-        // with parameters.
-
-
+        // Create a robot with:
+        //
+        // x = 5
+        // y = 3
+        // heading = EAST
+        // battery = 75
+        //
         // Example:
         //
-        // Robot robot = new Robot(
-        //     5,
-        //     3,
-        //     "EAST",
-        //     75
-        // );
+        // Robot robot =
+        //     new Robot(5, 3, "EAST", 75);
 
 
         // TODO:
-        // Print the robot status.
+        //
+        // Display the robot's status.
 
 
     }
@@ -758,34 +681,17 @@ public class VirtualRobot {
     // UNDERSTAND "this"
     // ========================================================
     //
-    // Look at:
+    // OBJECTIVE:
+    //
+    // Understand:
     //
     //     this.x = x;
-    //
-    // Discuss with your partner:
-    //
-    //     What does "this" mean?
     //
     // ========================================================
 
     static void challenge5() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 5"
-        );
-
-        System.out.println(
-                "UNDERSTAND THIS"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(5, "UNDERSTAND THIS");
 
 
         Robot robot = new Robot(
@@ -796,7 +702,51 @@ public class VirtualRobot {
         );
 
 
+        System.out.println(
+                "The robot was created with:"
+        );
+
+        System.out.println(
+                "x = 10"
+        );
+
+        System.out.println(
+                "y = 4"
+        );
+
+        System.out.println(
+                "heading = WEST"
+        );
+
+        System.out.println(
+                "battery = 90"
+        );
+
+
+        System.out.println();
+
         robot.reportStatus();
+
+
+        System.out.println();
+
+        System.out.println(
+                "Look at the constructor:"
+        );
+
+        System.out.println(
+                "this.x = x;"
+        );
+
+        System.out.println();
+
+        System.out.println(
+                "this.x means the robot's x."
+        );
+
+        System.out.println(
+                "x means the parameter."
+        );
     }
 
 
@@ -805,28 +755,15 @@ public class VirtualRobot {
     // ROBOT BEHAVIOR
     // ========================================================
     //
-    // Use the robot's methods to create a path.
+    // OBJECTIVE:
+    //
+    // Use object methods to control the robot.
     //
     // ========================================================
 
     static void challenge6() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 6"
-        );
-
-        System.out.println(
-                "ROBOT BEHAVIOR"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(6, "ROBOT BEHAVIOR");
 
 
         Robot robot = new Robot();
@@ -836,13 +773,13 @@ public class VirtualRobot {
         //
         // Create this path:
         //
-        // Move
-        // Move
-        // Turn Right
-        // Move
-        // Move
-        // Turn Left
-        // Move
+        // move
+        // move
+        // turnRight
+        // move
+        // move
+        // turnLeft
+        // move
 
 
         robot.reportStatus();
@@ -854,30 +791,15 @@ public class VirtualRobot {
     // BATTERY
     // ========================================================
     //
-    // Every action uses battery.
+    // OBJECTIVE:
     //
-    // Observe how the robot's STATE changes.
+    // Watch state change as the robot performs actions.
     //
     // ========================================================
 
     static void challenge7() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 7"
-        );
-
-        System.out.println(
-                "BATTERY STATE"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(7, "BATTERY MANAGEMENT");
 
 
         Robot robot = new Robot();
@@ -888,12 +810,14 @@ public class VirtualRobot {
 
         // TODO:
         //
-        // Move several times.
+        // Move the robot several times.
+
+
+        // TODO:
         //
-        // Watch the battery decrease.
-
-
-        robot.reportStatus();
+        // Check the battery using:
+        //
+        // robot.getBattery();
 
 
         // TODO:
@@ -907,42 +831,23 @@ public class VirtualRobot {
 
     // ========================================================
     // CHALLENGE 8
-    // SENSOR / SCAN
+    // SCAN FOR TARGET
     // ========================================================
     //
-    // The robot can ask:
+    // OBJECTIVE:
     //
-    //     "Do I see the target?"
-    //
-    // scan() returns:
-    //
-    //     true
-    //
-    // or
-    //
-    //     false
+    // Use a method that RETURNS a value.
     //
     // ========================================================
 
     static void challenge8() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
+        title(8, "SCAN FOR TARGET");
 
-        System.out.println(
-                "CHALLENGE 8"
-        );
 
-        System.out.println(
-                "SCAN FOR TARGET"
-        );
-
-        System.out.println(
-                "================================"
-        );
-
+        // The target is at:
+        //
+        //     (3, 2)
 
         Robot robot = new Robot(
                 3,
@@ -954,17 +859,22 @@ public class VirtualRobot {
 
         // TODO:
         //
-        // Scan the robot.
+        // Call scan().
+        //
+        // Store the result in:
+        //
+        // boolean found
 
 
         // TODO:
         //
-        // Store the result in a boolean variable.
-
-
-        // TODO:
+        // Use an if statement to print:
         //
-        // Print whether the target was found.
+        // "SUCCESS!"
+        //
+        // or
+        //
+        // "TARGET NOT FOUND!"
 
 
         robot.reportStatus();
@@ -976,43 +886,15 @@ public class VirtualRobot {
     // TWO ROBOTS
     // ========================================================
     //
-    // THIS is an important OOP challenge.
+    // OBJECTIVE:
     //
-    // Create two Robot objects.
-    //
-    // They each have their OWN:
-    //
-    //     position
-    //     heading
-    //     battery
-    //     target state
-    //
-    // Move Robot A.
-    //
-    // Move Robot B.
-    //
-    // Compare them.
+    // Discover that every object has its OWN state.
     //
     // ========================================================
 
     static void challenge9() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 9"
-        );
-
-        System.out.println(
-                "TWO ROBOTS"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(9, "TWO ROBOTS");
 
 
         Robot robotA = new Robot(
@@ -1032,15 +914,10 @@ public class VirtualRobot {
 
 
         System.out.println(
-                "ROBOT A:"
+                "BEFORE:"
         );
 
         robotA.reportStatus();
-
-
-        System.out.println(
-                "ROBOT B:"
-        );
 
         robotB.reportStatus();
 
@@ -1060,15 +937,28 @@ public class VirtualRobot {
         // Move robotB three times.
 
 
-        System.out.println();
         System.out.println(
-                "AFTER MOVEMENT:"
+                "AFTER:"
         );
-
 
         robotA.reportStatus();
 
         robotB.reportStatus();
+
+
+        System.out.println();
+
+        System.out.println(
+                "QUESTION:"
+        );
+
+        System.out.println(
+                "Why did Robot A's position not"
+        );
+
+        System.out.println(
+                "change when Robot B moved?"
+        );
     }
 
 
@@ -1077,110 +967,104 @@ public class VirtualRobot {
     // ENCAPSULATION
     // ========================================================
     //
-    // Try to do this:
+    // OBJECTIVE:
     //
-    //     robot.battery = 200;
-    //
-    // It should NOT work.
-    //
-    // Why?
-    //
-    // Because battery is PRIVATE.
-    //
-    // We use:
-    //
-    //     getBattery()
-    //
-    // to safely read it.
+    // Understand PRIVATE variables and getters.
     //
     // ========================================================
 
     static void challenge10() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 10"
-        );
-
-        System.out.println(
-                "ENCAPSULATION"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(10, "ENCAPSULATION");
 
 
         Robot robot = new Robot();
 
 
-        // DO NOT do this:
-        //
-        // robot.battery = 200;
-        //
-        // It will cause an error because battery is private.
+        System.out.println(
+                "Battery is private."
+        );
+
+        System.out.println(
+                "We cannot do:"
+        );
+
+        System.out.println(
+                "robot.battery = 200;"
+        );
+
+        System.out.println();
 
 
         // TODO:
         //
-        // Use getBattery() to read
-        // the battery level.
+        // Use:
+        //
+        // robot.getBattery()
+        //
+        // to read the battery.
 
 
         // TODO:
         //
-        // Print the battery level.
+        // Print the battery.
 
 
+        System.out.println();
+
+        System.out.println(
+                "PRIVATE variables protect"
+        );
+
+        System.out.println(
+                "the object's state."
+        );
     }
 
 
     // ========================================================
     // CHALLENGE 11
-    // BUILD A ROBOT MISSION
+    // BUILD A MISSION
     // ========================================================
     //
-    // Mission:
+    // OBJECTIVE:
     //
-    //     Start at [0,0].
-    //
-    //     1. Move forward twice.
-    //     2. Turn right.
-    //     3. Move forward three times.
-    //     4. Scan.
+    // Combine multiple robot behaviors.
     //
     // ========================================================
 
     static void challenge11() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
-
-        System.out.println(
-                "CHALLENGE 11"
-        );
-
-        System.out.println(
-                "BUILD A ROBOT MISSION"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        title(11, "BUILD A ROBOT MISSION");
 
 
         Robot robot = new Robot();
 
 
+        System.out.println(
+                "MISSION:"
+        );
+
+        System.out.println(
+                "1. Move twice"
+        );
+
+        System.out.println(
+                "2. Turn right"
+        );
+
+        System.out.println(
+                "3. Move three times"
+        );
+
+        System.out.println(
+                "4. Scan"
+        );
+
+
         // TODO:
         //
-        // Complete the mission.
+        // Write the mission.
 
 
         robot.reportStatus();
@@ -1189,53 +1073,37 @@ public class VirtualRobot {
 
     // ========================================================
     // CHALLENGE 12
-    // TEAM CHALLENGE
+    // CREATE YOUR OWN ROBOT BEHAVIOR
     // ========================================================
     //
-    // CREATE YOUR OWN ROBOT METHOD.
+    // OBJECTIVE:
+    //
+    // Go into the Robot class and create a new method.
     //
     // Examples:
     //
     //     park()
-    //     rescue()
     //     collectSample()
-    //     scoreGamePiece()
+    //     score()
+    //     rescue()
     //     inspectArea()
-    //
-    // Your method must:
-    //
-    //     - Belong to Robot.
-    //     - Use robot state.
-    //     - Perform at least two actions.
     //
     // ========================================================
 
     static void challenge12() {
 
-        System.out.println();
-        System.out.println(
-                "================================"
-        );
+        title(12, "CREATE YOUR OWN BEHAVIOR");
 
-        System.out.println(
-                "CHALLENGE 12"
-        );
 
-        System.out.println(
-                "CREATE YOUR OWN ROBOT BEHAVIOR"
-        );
-
-        System.out.println(
-                "================================"
-        );
+        Robot robot = new Robot();
 
 
         /*
          * TODO:
          *
-         * Go back to the Robot class.
+         * Go to the Robot class.
          *
-         * Create your own method.
+         * Add your own method.
          *
          * Example:
          *
@@ -1247,9 +1115,6 @@ public class VirtualRobot {
          *
          * }
          */
-
-
-        Robot robot = new Robot();
 
 
         // TODO:
@@ -1266,9 +1131,7 @@ public class VirtualRobot {
     // FINAL ROBOT MISSION
     // ========================================================
     //
-    // 🚀 FINAL TEAM CHALLENGE 🚀
-    //
-    // Your robot must complete a mission.
+    // 🚀 FINAL TEAM CHALLENGE
     //
     // START:
     //
@@ -1278,90 +1141,84 @@ public class VirtualRobot {
     //
     //     (3,2)
     //
-    //
     // MISSION:
     //
-    //     1. Start the robot.
+    //     Navigate to the target.
     //
-    //     2. Navigate to the target.
+    //     Scan.
     //
-    //     3. Scan for the target.
+    //     If found:
     //
-    //     4. If the target is found:
+    //         SUCCESS!
     //
-    //            Print a success message.
+    //     Otherwise:
     //
-    //        Otherwise:
-    //
-    //            Print a failure message.
-    //
-    //     5. Print final robot status.
-    //
+    //         FAILURE!
     //
     // BONUS:
     //
-    //     Create:
+    //     Use a method called:
     //
     //         navigateToTarget()
-    //
-    //     so the main mission becomes readable.
     //
     // ========================================================
 
     static void challenge13() {
 
-        System.out.println();
-        System.out.println(
-                "=========================================="
-        );
-
-        System.out.println(
-                "       FINAL ROBOT MISSION"
-        );
-
-        System.out.println(
-                "=========================================="
-        );
+        title(13, "FINAL ROBOT MISSION");
 
 
         Robot robot = new Robot();
 
 
+        System.out.println(
+                "STARTING MISSION..."
+        );
+
+
+        robot.reportStatus();
+
+
+        // ====================================================
         // TODO:
         //
-        // Navigate to:
-        //
-        //     x = 3
-        //     y = 2
+        // Navigate to (3,2).
         //
         // Remember:
         //
-        // The robot starts facing NORTH.
+        // The robot starts at (0,0)
+        // facing NORTH.
+        //
+        // ====================================================
 
 
+        // ====================================================
         // TODO:
         //
         // Scan for the target.
+        //
+        // Store the returned boolean.
+        // ====================================================
 
 
+        // ====================================================
         // TODO:
         //
-        // Use the returned boolean to decide
-        // whether the mission succeeded.
+        // Check whether the target was found.
+        // ====================================================
 
 
-        // TODO:
-        //
-        // Display final robot status.
+        robot.reportStatus();
 
 
         System.out.println();
+
         System.out.println(
                 "=========================================="
         );
 
         System.out.println(
-                "          MISSION COMPLETE"
+                "FINAL MISSION COMPLETE!"
         );
 
         System.out.println(
@@ -1374,85 +1231,78 @@ public class VirtualRobot {
     // MAIN
     // ========================================================
     //
-    // Run ONE challenge at a time.
+    // IMPORTANT:
+    //
+    // Every challenge can be run independently.
+    //
+    // Uncomment EXACTLY ONE line below.
     //
     // ========================================================
 
     public static void main(String[] args) {
 
+
         System.out.println();
-        System.out.println(
-                "=========================================="
-        );
-
-        System.out.println(
-                "          VIRTUAL ROBOT"
-        );
-
-        System.out.println(
-                "             SESSION 6"
-        );
 
         System.out.println(
                 "=========================================="
         );
 
+        System.out.println(
+                "        VIRTUAL ROBOT — SESSION 6"
+        );
 
-        // Challenge 1
+        System.out.println(
+                "=========================================="
+        );
+
+
+        /*
+         * ====================================================
+         * PICK ONE CHALLENGE
+         * ====================================================
+         *
+         * Uncomment ONE line.
+         *
+         */
+
+
         // challenge1();
 
-
-        // Challenge 2
         // challenge2();
 
-
-        // Challenge 3
         // challenge3();
 
-
-        // Challenge 4
         // challenge4();
 
-
-        // Challenge 5
         // challenge5();
 
-
-        // Challenge 6
         // challenge6();
 
-
-        // Challenge 7
         // challenge7();
 
-
-        // Challenge 8
         // challenge8();
 
-
-        // Challenge 9
         // challenge9();
 
-
-        // Challenge 10
         // challenge10();
 
-
-        // Challenge 11
         // challenge11();
 
-
-        // Challenge 12
         // challenge12();
 
-
-        // FINAL CHALLENGE
         // challenge13();
 
 
         System.out.println();
+
         System.out.println(
-                "Uncomment ONE challenge and run it."
+                "Choose ONE challenge in main()."
+        );
+
+        System.out.println(
+                "Uncomment it and run the program."
         );
     }
 }
+ 
