@@ -17,7 +17,7 @@ You must use:
  - atleast 2 String variables
 */
 
-public class RobotDashboard {
+public class RobotDashboardChallenge {
 
     public static void main(String[] args) {
 

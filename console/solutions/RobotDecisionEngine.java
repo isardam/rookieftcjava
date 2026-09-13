@@ -52,24 +52,32 @@ public class RobotDecisionEngine {
 
         } else if (obstacleDetected) {
 
-            System.out.println("DECISION: SEARCH");
-            System.out.println("Reason: Obstacle detected.");
+            // An obstacle in the way means GO AROUND it.
+            // (It does NOT mean "search" - the robot already
+            //  knows where it wants to go, something is just
+            //  blocking the path.)
+            System.out.println("DECISION: AVOID OBSTACLE");
+            System.out.println("Reason: Something is blocking "
+                    + "the path.");
 
-        } else if (targetDetected && distanceToTarget > 20) {
-
-            System.out.println("DECISION: APPROACH TARGET");
-            System.out.println("Reason: Target detected and "
-                    + "robot is still far away.");
-
-        } else if (targetDetected && distanceToTarget <= 20) {
-
-            System.out.println("DECISION: APPROACH TARGET");
-            System.out.println("Reason: Target is nearby.");
-
-        } else {
+        } else if (!targetDetected) {
 
             System.out.println("DECISION: SEARCH");
             System.out.println("Reason: Target not detected.");
+
+        } else if (distanceToTarget > 20) {
+
+            System.out.println("DECISION: APPROACH TARGET");
+            System.out.println("Reason: Target detected but "
+                    + "robot is still more than 20 cm away.");
+
+        } else {
+
+            // We got here because: battery is fine, no obstacle,
+            // target IS detected, and it is 20 cm or closer.
+            // Close enough to pick it up!
+            System.out.println("DECISION: COLLECT TARGET");
+            System.out.println("Reason: Target is within 20 cm.");
         }
 
         System.out.println("---------------------------------");

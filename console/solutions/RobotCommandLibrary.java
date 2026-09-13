@@ -40,8 +40,22 @@ public class RobotCommandLibrary {
     //
     // ========================================================
 
-    static int currentRow = 0;
-    static int currentColumn = 0;
+    // WHERE THE ROBOT IS.
+    //
+    // We use (x, y) like a graph, and we use the SAME
+    // meaning everywhere in this course:
+    //
+    //     EAST  = x gets bigger
+    //     WEST  = x gets smaller
+    //     NORTH = y gets bigger
+    //     SOUTH = y gets smaller
+    //
+    // Home is (0, 0).
+
+    static int x = 0;
+    static int y = 0;
+
+    // WHICH WAY THE ROBOT IS FACING.
 
     static String direction = "NORTH";
 
@@ -50,6 +64,70 @@ public class RobotCommandLibrary {
     static boolean targetFound = false;
 
     static boolean carryingPackage = false;
+
+
+    // ========================================================
+    // THE ONE PLACE POSITION EVER CHANGES
+    // ========================================================
+    //
+    // IMPORTANT IDEA:
+    //
+    // Every single way the robot can move calls THIS method.
+    //
+    // Why? Because if two different methods both changed the
+    // position on their own, they could disagree with each
+    // other - and then the robot's idea of where it is would
+    // be wrong. That is one of the hardest kinds of bug to
+    // find on a real robot.
+    //
+    // One job, one place. Always.
+    //
+    // ========================================================
+
+    static void stepOneSquare(String heading) {
+
+        if (heading.equals("NORTH")) {
+
+            y++;
+
+        } else if (heading.equals("SOUTH")) {
+
+            y--;
+
+        } else if (heading.equals("EAST")) {
+
+            x++;
+
+        } else if (heading.equals("WEST")) {
+
+            x--;
+        }
+
+        distanceTraveled++;
+    }
+
+
+    // Which way is "backwards" from the way we are facing?
+
+    static String oppositeOf(String heading) {
+
+        if (heading.equals("NORTH")) {
+
+            return "SOUTH";
+
+        } else if (heading.equals("SOUTH")) {
+
+            return "NORTH";
+
+        } else if (heading.equals("EAST")) {
+
+            return "WEST";
+
+        } else {
+
+            return "EAST";
+        }
+    }
 
 
     // ========================================================
@@ -70,9 +148,19 @@ public class RobotCommandLibrary {
 
     static void moveForward() {
 
-        System.out.println("ROBOT: Moving forward");
+        // Move ONE square in whatever direction we are facing.
+        //
+        // Notice: turning actually matters now. If the robot is
+        // facing EAST, "forward" means east.
 
-        distanceTraveled++;
+        stepOneSquare(direction);
+
+        System.out.println(
+                "ROBOT: Moving forward (" +
+                direction +
+                ") -> " +
+                getPosition()
+        );
     }
 
 
@@ -82,9 +170,15 @@ public class RobotCommandLibrary {
 
     static void moveBackward() {
 
-        System.out.println("ROBOT: Moving backward");
+        // Backing up does NOT change which way we face -
+        // just like backing up a car.
 
-        distanceTraveled++;
+        stepOneSquare(oppositeOf(direction));
+
+        System.out.println(
+                "ROBOT: Moving backward -> " +
+                getPosition()
+        );
     }
 
 
@@ -152,6 +246,23 @@ public class RobotCommandLibrary {
     //
     // ========================================================
 
+    // NOTE FOR STUDENTS:
+    //
+    // There are now TWO methods called moveForward.
+    //
+    //     moveForward()      <- no details
+    //     moveForward(int)   <- one detail: how many squares
+    //
+    // Java allows this! It is called OVERLOADING.
+    // Java picks which one you meant by looking at what you
+    // put inside the parentheses:
+    //
+    //     moveForward();     -> runs the first one
+    //     moveForward(3);    -> runs this one
+    //
+    // This is the same idea as a Blocks "My Block" that has
+    // an input socket versus one that has no socket.
+
     static void moveForward(int squares) {
 
         System.out.println(
@@ -163,11 +274,9 @@ public class RobotCommandLibrary {
 
         for (int i = 0; i < squares; i++) {
 
-            distanceTraveled++;
-
-            System.out.println(
-                    "  Step " + (i + 1)
-            );
+            // Reuse the method we already wrote!
+            // We do NOT copy its code down here.
+            moveForward();
         }
     }
 
@@ -203,20 +312,21 @@ public class RobotCommandLibrary {
     //
     // ========================================================
 
+    // These move in a FIXED compass direction, no matter which
+    // way the robot happens to be facing. Handy for driving
+    // straight home.
+    //
+    // They all call stepOneSquare(), so they can never
+    // disagree with moveForward() about where the robot is.
+
     static void moveNorth(int squares) {
 
         for (int i = 0; i < squares; i++) {
 
-            currentRow--;
-
-            distanceTraveled++;
+            stepOneSquare("NORTH");
 
             System.out.println(
-                    "Moving NORTH -> [" +
-                    currentRow +
-                    "][" +
-                    currentColumn +
-                    "]"
+                    "Moving NORTH -> " + getPosition()
             );
         }
     }
@@ -226,16 +336,10 @@ public class RobotCommandLibrary {
 
         for (int i = 0; i < squares; i++) {
 
-            currentRow++;
-
-            distanceTraveled++;
+            stepOneSquare("SOUTH");
 
             System.out.println(
-                    "Moving SOUTH -> [" +
-                    currentRow +
-                    "][" +
-                    currentColumn +
-                    "]"
+                    "Moving SOUTH -> " + getPosition()
             );
         }
     }
@@ -245,16 +349,10 @@ public class RobotCommandLibrary {
 
         for (int i = 0; i < squares; i++) {
 
-            currentColumn++;
-
-            distanceTraveled++;
+            stepOneSquare("EAST");
 
             System.out.println(
-                    "Moving EAST -> [" +
-                    currentRow +
-                    "][" +
-                    currentColumn +
-                    "]"
+                    "Moving EAST -> " + getPosition()
             );
         }
     }
@@ -264,16 +362,10 @@ public class RobotCommandLibrary {
 
         for (int i = 0; i < squares; i++) {
 
-            currentColumn--;
-
-            distanceTraveled++;
+            stepOneSquare("WEST");
 
             System.out.println(
-                    "Moving WEST -> [" +
-                    currentRow +
-                    "][" +
-                    currentColumn +
-                    "]"
+                    "Moving WEST -> " + getPosition()
             );
         }
     }
@@ -474,36 +566,39 @@ public class RobotCommandLibrary {
         );
 
 
-        while (currentRow > 0) {
+        // Drive back to y = 0.
+        //
+        // If we are NORTH of home (y is positive) we need to
+        // go SOUTH to get back. And the other way around.
 
-            moveNorth(1);
-        }
-
-
-        while (currentRow < 0) {
+        while (y > 0) {
 
             moveSouth(1);
         }
 
 
-        while (currentColumn > 0) {
+        while (y < 0) {
+
+            moveNorth(1);
+        }
+
+
+        // Now drive back to x = 0.
+
+        while (x > 0) {
 
             moveWest(1);
         }
 
 
-        while (currentColumn < 0) {
+        while (x < 0) {
 
             moveEast(1);
         }
 
 
         System.out.println(
-                "ROBOT: HOME [" +
-                currentRow +
-                "][" +
-                currentColumn +
-                "]"
+                "ROBOT: HOME " + getPosition()
         );
     }
 
@@ -526,18 +621,13 @@ public class RobotCommandLibrary {
 
     static boolean isHome() {
 
-        return currentRow == 0 &&
-                currentColumn == 0;
+        return x == 0 && y == 0;
     }
 
 
     static String getPosition() {
 
-        return "[" +
-                currentRow +
-                "][" +
-                currentColumn +
-                "]";
+        return "(" + x + ", " + y + ")";
     }
 
 

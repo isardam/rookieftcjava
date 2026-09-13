@@ -75,7 +75,7 @@
  * ============================================================
  */
 
-class Robot {
+class SimRobot {
 
     /*
      * ========================================================
@@ -117,12 +117,12 @@ class Robot {
      *
      * Example:
      *
-     *     Robot robot = new Robot();
+     *     SimRobot robot = new SimRobot();
      *
      * ========================================================
      */
 
-    public Robot() {
+    public SimRobot() {
 
         x = 0;
         y = 0;
@@ -143,7 +143,7 @@ class Robot {
      *
      * Example:
      *
-     *     Robot robot = new Robot(
+     *     SimRobot robot = new SimRobot(
      *         5,
      *         3,
      *         "EAST",
@@ -153,7 +153,7 @@ class Robot {
      * ========================================================
      */
 
-    public Robot(
+    public SimRobot(
             int x,
             int y,
             String heading,
@@ -539,7 +539,7 @@ class Robot {
  * ============================================================
  */
 
-public class VirtualRobot {
+public class VirtualRobotChallenge {
 
 
     /*
@@ -595,7 +595,7 @@ public class VirtualRobot {
         //
         // Example:
         //
-        // Robot robot = new Robot();
+        // SimRobot robot = new SimRobot();
 
 
         // TODO:
@@ -620,7 +620,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         System.out.println(
@@ -701,7 +701,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot(
+        SimRobot robot = new SimRobot(
                 5,
                 3,
                 "EAST",
@@ -750,7 +750,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         // TODO:
@@ -786,7 +786,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         // TODO:
@@ -818,7 +818,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot(
+        SimRobot robot = new SimRobot(
                 3,
                 2,
                 "NORTH",
@@ -866,7 +866,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robotA = new Robot(
+        SimRobot robotA = new SimRobot(
                 0,
                 0,
                 "NORTH",
@@ -874,7 +874,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robotB = new Robot(
+        SimRobot robotB = new SimRobot(
                 5,
                 5,
                 "SOUTH",
@@ -952,7 +952,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         /*
@@ -1010,7 +1010,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         /*
@@ -1074,7 +1074,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         /*
@@ -1166,7 +1166,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         robot.reportStatus();

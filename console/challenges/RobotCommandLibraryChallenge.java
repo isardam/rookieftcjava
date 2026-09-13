@@ -45,7 +45,7 @@
  */
 
 
-public class RobotCommandLibrary {
+public class RobotCommandLibraryChallenge {
 
 
     // ========================================================
@@ -58,9 +58,18 @@ public class RobotCommandLibrary {
     //
     // ========================================================
 
-    static int row = 0;
+    // WHERE THE ROBOT IS.
+    //
+    //     EAST  = x gets bigger
+    //     WEST  = x gets smaller
+    //     NORTH = y gets bigger
+    //     SOUTH = y gets smaller
+    //
+    // Home is (0, 0).
 
-    static int column = 0;
+    static int x = 0;
+
+    static int y = 0;
 
     static String direction = "NORTH";
 
@@ -336,7 +345,7 @@ public class RobotCommandLibrary {
     //
     //     true
     //
-    // if the robot is at [0][0].
+    // if the robot is at (0, 0).
     //
     // Otherwise return:
     //
@@ -387,7 +396,7 @@ public class RobotCommandLibrary {
     //
     //     1. Search a 4 x 4 grid.
     //     2. Check each location.
-    //     3. Compare row and column.
+    //     3. Compare x and y.
     //     4. Return true when the target is found.
     //     5. Return false if it isn't found.
     //
@@ -412,8 +421,8 @@ public class RobotCommandLibrary {
         // TODO:
         // Search for:
         //
-        // row = 2
-        // column = 3
+        // x = 2
+        // y = 3
 
 
         // TODO:
@@ -571,7 +580,7 @@ public class RobotCommandLibrary {
     //
     // 🚀 FINAL MISSION 🚀
     //
-    // Your robot starts at [0][0].
+    // Your robot starts at (0, 0).
     //
     // A package must be delivered.
     //
@@ -651,23 +660,81 @@ public class RobotCommandLibrary {
     // ========================================================
 
 
-    static void moveForward() {
+    // The ONE place the robot's position ever changes.
+    // Every way of moving calls this, so they can never
+    // disagree about where the robot is.
 
-        System.out.println(
-                "ROBOT: Moving forward"
-        );
+    static void stepOneSquare(String heading) {
+
+        if (heading.equals("NORTH")) {
+
+            y++;
+
+        } else if (heading.equals("SOUTH")) {
+
+            y--;
+
+        } else if (heading.equals("EAST")) {
+
+            x++;
+
+        } else if (heading.equals("WEST")) {
+
+            x--;
+        }
 
         distanceTraveled++;
     }
 
 
-    static void moveBackward() {
+    static String getPosition() {
+
+        return "(" + x + ", " + y + ")";
+    }
+
+
+    static void moveForward() {
+
+        // Moves one square in whatever direction we are facing.
+
+        stepOneSquare(direction);
 
         System.out.println(
-                "ROBOT: Moving backward"
+                "ROBOT: Moving forward (" +
+                direction +
+                ") -> " +
+                getPosition()
         );
+    }
 
-        distanceTraveled++;
+
+    static void moveBackward() {
+
+        String backwards;
+
+        if (direction.equals("NORTH")) {
+
+            backwards = "SOUTH";
+
+        } else if (direction.equals("SOUTH")) {
+
+            backwards = "NORTH";
+
+        } else if (direction.equals("EAST")) {
+
+            backwards = "WEST";
+
+        } else {
+
+            backwards = "EAST";
+        }
+
+        stepOneSquare(backwards);
+
+        System.out.println(
+                "ROBOT: Moving backward -> " +
+                getPosition()
+        );
     }
 
 
@@ -723,6 +790,10 @@ public class RobotCommandLibrary {
     }
 
 
+    // NOTE: there are now TWO methods named moveForward.
+    // Java allows this - it is called OVERLOADING.
+    // Java picks one by looking at what is in the parentheses.
+
     static void moveForward(int spaces) {
 
         System.out.println(
@@ -734,11 +805,8 @@ public class RobotCommandLibrary {
 
         for (int i = 0; i < spaces; i++) {
 
-            distanceTraveled++;
-
-            System.out.println(
-                    "  Step " + (i + 1)
-            );
+            // Reuse the method we already have.
+            moveForward();
         }
     }
 
@@ -751,11 +819,7 @@ public class RobotCommandLibrary {
         );
 
         System.out.println(
-                "Position: [" +
-                row +
-                "][" +
-                column +
-                "]"
+                "Position: " + getPosition()
         );
 
         System.out.println(

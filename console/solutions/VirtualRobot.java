@@ -41,6 +41,43 @@
  * been run first.
  *
  * ============================================================
+ *
+ * COACH: RUN CHALLENGE 9 FIRST
+ * ============================================================
+ *
+ * Challenge 9 ("Two Robots") is the best way into this whole
+ * topic. Students create two robots, move one, and discover
+ * for themselves that the other one did not move.
+ *
+ * That DISCOVERY is what "each object has its own state"
+ * actually means. Teaching the definition first and the
+ * discovery second is backwards - the words land on nothing.
+ *
+ * Suggested order:
+ *
+ *     9   two robots      <- start here, discover it
+ *     2   create an object
+ *     3   watch state change
+ *     4   constructor
+ *     1   predict the robot
+ *     6   behaviour
+ *     7   battery
+ *     8   scan (returns a value)
+ *     5   break 'this' on purpose
+ *     10  encapsulation
+ *     11  build a mission
+ *     12  your own behaviour
+ *     13  final mission
+ *
+ * NOTE ON COORDINATES
+ * ============================================================
+ *
+ * We use the SAME meaning as Session 5:
+ *
+ *     EAST  = x bigger      NORTH = y bigger
+ *     WEST  = x smaller     SOUTH = y smaller
+ *
+ * ============================================================
  */
 
 
@@ -62,7 +99,7 @@
  * ============================================================
  */
 
-class Robot {
+class SimRobot {
 
 
     // ========================================================
@@ -98,7 +135,7 @@ class Robot {
     //
     // ========================================================
 
-    public Robot() {
+    public SimRobot() {
 
         x = 0;
         y = 0;
@@ -116,7 +153,7 @@ class Robot {
     //
     // ========================================================
 
-    public Robot(
+    public SimRobot(
             int x,
             int y,
             String heading,
@@ -492,61 +529,56 @@ public class VirtualRobot {
 
     static void challenge1() {
 
-        title(1, "UNDERSTAND THE CLASS");
+        title(1, "PREDICT THE ROBOT");
 
 
-        System.out.println(
-                "A class is a blueprint."
-        );
+        /*
+         * ACTIVITY - do this BEFORE running the program.
+         *
+         * Go and read the SimRobot class at the top of this
+         * file. Do not run anything yet.
+         *
+         * On paper, write down what you think each of these
+         * will print:
+         *
+         *     1. A brand new robot's position
+         *     2. A brand new robot's heading
+         *     3. A brand new robot's battery
+         *
+         *     4. After move() twice, what position?
+         *     5. After move() twice, what battery?
+         *        (hint: find where battery -= 5 happens)
+         *
+         *     6. After turnRight(), what heading?
+         *     7. After turnRight(), what battery?
+         *
+         * NOW run it and check your answers.
+         *
+         * Every answer you got wrong is a place where your
+         * mental model of the code does not match the code.
+         * Those are the valuable ones - go find out why.
+         */
 
-        System.out.println(
-                "Robot describes what a robot HAS"
-        );
+        SimRobot robot = new SimRobot();
 
-        System.out.println(
-                "and what a robot CAN DO."
-        );
+        System.out.println("A brand new robot:");
+        robot.reportStatus();
+
+        robot.move();
+        robot.move();
+
+        System.out.println("After moving twice:");
+        robot.reportStatus();
+
+        robot.turnRight();
+
+        System.out.println("After turning right:");
+        robot.reportStatus();
 
 
         System.out.println();
-
         System.out.println(
-                "Robot has:"
-        );
-
-        System.out.println(
-                "  position"
-        );
-
-        System.out.println(
-                "  heading"
-        );
-
-        System.out.println(
-                "  battery"
-        );
-
-        System.out.println(
-                "  target state"
-        );
-
-
-        System.out.println();
-
-        System.out.println(
-                "Robot can:"
-        );
-
-        System.out.println(
-                "  move"
-        );
-
-        System.out.println(
-                "  turn"
-        );
-
-        System.out.println(
-                "  scan"
+                "How many did you predict correctly?"
         );
     }
 
@@ -573,7 +605,7 @@ public class VirtualRobot {
         //
         // Example:
         //
-        // Robot robot = new Robot();
+        // SimRobot robot = new SimRobot();
 
 
         // TODO:
@@ -604,7 +636,7 @@ public class VirtualRobot {
         //
         // This makes the challenge independent.
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         System.out.println(
@@ -664,8 +696,8 @@ public class VirtualRobot {
         //
         // Example:
         //
-        // Robot robot =
-        //     new Robot(5, 3, "EAST", 75);
+        // SimRobot robot =
+        //     new SimRobot(5, 3, "EAST", 75);
 
 
         // TODO:
@@ -691,10 +723,10 @@ public class VirtualRobot {
 
     static void challenge5() {
 
-        title(5, "UNDERSTAND THIS");
+        title(5, "BREAK 'this' ON PURPOSE");
 
 
-        Robot robot = new Robot(
+        SimRobot robot = new SimRobot(
                 10,
                 4,
                 "WEST",
@@ -703,49 +735,69 @@ public class VirtualRobot {
 
 
         System.out.println(
-                "The robot was created with:"
+                "We asked for a robot at (10, 4),"
         );
 
         System.out.println(
-                "x = 10"
+                "facing WEST, with 90% battery."
         );
-
-        System.out.println(
-                "y = 4"
-        );
-
-        System.out.println(
-                "heading = WEST"
-        );
-
-        System.out.println(
-                "battery = 90"
-        );
-
 
         System.out.println();
 
         robot.reportStatus();
 
 
+        /*
+         * ACTIVITY - now go and break it.
+         *
+         * Find the constructor in SimRobot that takes four
+         * parameters. It says:
+         *
+         *     this.x = x;
+         *     this.y = y;
+         *
+         * Delete the word "this." from the first two lines,
+         * so they read:
+         *
+         *     x = x;
+         *     y = y;
+         *
+         * Run this challenge again.
+         *
+         * WHAT HAPPENS:
+         *
+         *     Position goes back to (0, 0) - the robot forgot
+         *     where we told it to start.
+         *
+         * WHY:
+         *
+         *     Inside the constructor there are TWO things
+         *     called x:
+         *
+         *         x        the PARAMETER (the 10 we passed in)
+         *         this.x   the ROBOT'S OWN x (the field)
+         *
+         *     Writing "x = x" copies the parameter into
+         *     itself. It does nothing at all. The robot's own
+         *     x is never touched, so it stays 0.
+         *
+         *     "this." is how we say "the robot's own one".
+         *
+         * Notice Java did NOT complain. It compiled fine and
+         * silently did nothing useful. Those are the bugs that
+         * cost you matches.
+         *
+         * Now put "this." back.
+         */
+
+
         System.out.println();
-
         System.out.println(
-                "Look at the constructor:"
+                "Now go break the constructor - see the"
         );
 
         System.out.println(
-                "this.x = x;"
-        );
-
-        System.out.println();
-
-        System.out.println(
-                "this.x means the robot's x."
-        );
-
-        System.out.println(
-                "x means the parameter."
+                "instructions in the comments above."
         );
     }
 
@@ -766,7 +818,7 @@ public class VirtualRobot {
         title(6, "ROBOT BEHAVIOR");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         // TODO:
@@ -802,7 +854,7 @@ public class VirtualRobot {
         title(7, "BATTERY MANAGEMENT");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         robot.reportStatus();
@@ -849,7 +901,7 @@ public class VirtualRobot {
         //
         //     (3, 2)
 
-        Robot robot = new Robot(
+        SimRobot robot = new SimRobot(
                 3,
                 2,
                 "NORTH",
@@ -897,7 +949,7 @@ public class VirtualRobot {
         title(9, "TWO ROBOTS");
 
 
-        Robot robotA = new Robot(
+        SimRobot robotA = new SimRobot(
                 0,
                 0,
                 "NORTH",
@@ -905,7 +957,7 @@ public class VirtualRobot {
         );
 
 
-        Robot robotB = new Robot(
+        SimRobot robotB = new SimRobot(
                 5,
                 5,
                 "SOUTH",
@@ -978,46 +1030,66 @@ public class VirtualRobot {
         title(10, "ENCAPSULATION");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
+
+        /*
+         * ACTIVITY - try to cheat, and watch Java stop you.
+         *
+         * STEP 1. Add this line right here and try to run it:
+         *
+         *     robot.battery = 200;
+         *
+         *     -> It will NOT compile.
+         *     -> Read the error. Write down what it says.
+         *
+         *     Java is refusing because battery is PRIVATE -
+         *     it belongs to the robot, and only the robot's
+         *     own methods are allowed to change it.
+         *
+         * STEP 2. Delete that line. Now read the battery the
+         *     allowed way, using the getter:
+         *
+         *     System.out.println(robot.getBattery());
+         *
+         *     -> This works. Reading is fine. Changing is not.
+         *
+         * STEP 3. Think about WHY we would want this.
+         *
+         *     A battery of 200% is not a real thing. If any
+         *     part of our code could set it to 200, then a
+         *     bug anywhere in the program could put the robot
+         *     into an impossible state - and we would have to
+         *     search the WHOLE program to find out who did it.
+         *
+         *     With private, there are only a handful of places
+         *     that can change battery, and they are all in the
+         *     SimRobot class. That is a much smaller haystack.
+         *
+         * THE REAL LESSON:
+         *
+         *     private is not about secrecy.
+         *     It is about shrinking the number of places a bug
+         *     can come from.
+         */
+
+        System.out.println("Battery is private.");
 
         System.out.println(
-                "Battery is private."
+                "Try adding:  robot.battery = 200;"
         );
 
         System.out.println(
-                "We cannot do:"
-        );
-
-        System.out.println(
-                "robot.battery = 200;"
+                "It will not compile. That is the point."
         );
 
         System.out.println();
 
-
-        // TODO:
-        //
-        // Use:
-        //
-        // robot.getBattery()
-        //
-        // to read the battery.
-
-
-        // TODO:
-        //
-        // Print the battery.
-
-
-        System.out.println();
-
+        // The allowed way to look at it:
         System.out.println(
-                "PRIVATE variables protect"
-        );
-
-        System.out.println(
-                "the object's state."
+                "Battery (via getter): " +
+                robot.getBattery() +
+                "%"
         );
     }
 
@@ -1038,7 +1110,7 @@ public class VirtualRobot {
         title(11, "BUILD A ROBOT MISSION");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         System.out.println(
@@ -1095,7 +1167,7 @@ public class VirtualRobot {
         title(12, "CREATE YOUR OWN BEHAVIOR");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         /*
@@ -1168,7 +1240,7 @@ public class VirtualRobot {
         title(13, "FINAL ROBOT MISSION");
 
 
-        Robot robot = new Robot();
+        SimRobot robot = new SimRobot();
 
 
         System.out.println(

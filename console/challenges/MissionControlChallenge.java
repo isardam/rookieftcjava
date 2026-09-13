@@ -5,7 +5,7 @@ Challenges
 3. Can you now think how to create a method startMission() and call it from main()
 */
 
-public class MissionControl {
+public class MissionControlChallenge {
 
     public static void main(String[] args) {
 

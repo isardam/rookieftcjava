@@ -11,7 +11,7 @@ Challenges
                          /     \
                        YES      NO
                         |        |
-                     SEARCH   Target?
+                     AVOID    Target?
                               /     \
                             NO       YES
                             |         |
@@ -19,7 +19,7 @@ Challenges
                                    /     \
                               > 20 cm   <= 20 cm
                                  |          |
-                              APPROACH   APPROACH
+                              APPROACH   COLLECT
 
   2. Scenario 1: low battery
   3. Scenario 2: target found
@@ -27,7 +27,7 @@ Challenges
   5. Scenario 4: obstacle
 */
 
-public class RobotDecisionEngine {
+public class RobotDecisionEngineChallenge {
 
     public static void main(String[] args) {
 
@@ -77,8 +77,8 @@ public class RobotDecisionEngine {
 
         } else if (obstacleDetected) {
 
-            System.out.println("DECISION: SEARCH");
-            System.out.println("Reason: Obstacle detected.");
+            System.out.println("DECISION: AVOID OBSTACLE");
+            System.out.println("Reason: Something is blocking the path.");
 
         } else if (!targetDetected) {
 
