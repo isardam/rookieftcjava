@@ -4,8 +4,6 @@ A Java curriculum for a rookie middle-school FTC team coming from Blocks.
 
 **Goal:** teach enough Java that a rookie can confidently **read, modify, debug, and eventually write** FTC robot code. Not to produce professional Java developers.
 
-> See [`CURRICULUM-REVIEW.md`](CURRICULUM-REVIEW.md) for the full pedagogical review, the session-by-session analysis, the Blocks→Java bridge, and the recommended 14-session ramp.
-
 ---
 
 ## Layout
